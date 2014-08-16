@@ -54,7 +54,12 @@ angular.module('Beaconbabe', ['ionic', 'config', 'Beaconbabe.controllers'])
       },
       
       didEnterRegion: function(pluginResult){
-        alert('bbb] didEnterRegion: ' + JSON.stringify(pluginResult));
+        console.log('bbb] didEnterRegion: ' + JSON.stringify(pluginResult));
+        console.log('bbb] didEnterRegion.region.rssi: ' + JSON.stringify(pluginResult.region.rssi));
+      }
+
+      , didExitRegion: function(pluginResult){
+        console.log('[bbb] didExitRegion' + JSON.stringify(pluginResult));
       }
   
     });
@@ -70,6 +75,9 @@ angular.module('Beaconbabe', ['ionic', 'config', 'Beaconbabe.controllers'])
     .fail(console.error)
     .done();
 
+    window.cordova.plugins.locationManager.startRangingBeaconsInRegion(beaconRegion)
+    .fail(console.error)
+    .done();
   });
 })
 
