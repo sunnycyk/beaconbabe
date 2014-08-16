@@ -19,6 +19,57 @@ angular.module('Beaconbabe', ['ionic', 'config', 'Beaconbabe.controllers'])
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+
+    var logToDom = function (message) {
+      var e = document.createElement('label');
+      e.innerText = message;
+  
+      var br = document.createElement('br');
+      var br2 = document.createElement('br');
+      document.body.appendChild(e);
+      document.body.appendChild(br);
+      document.body.appendChild(br2);
+  
+      window.scrollTo(0, window.document.height);
+    };
+  
+    var delegate = new window.cordova.plugins.locationManager.Delegate().implement({
+  
+      didDetermineStateForRegion: function (pluginResult) {
+  
+        console.log('[bbb][DOM] didDetermineStateForRegion: ' + JSON.stringify(pluginResult));
+  
+        window.cordova.plugins.locationManager.appendToDeviceLog('[DOM] didDetermineStateForRegion: '
+                                                          + JSON.stringify(pluginResult));
+      },
+  
+      didStartMonitoringForRegion: function (pluginResult) {
+        console.log('didStartMonitoringForRegion:', pluginResult);
+  
+        console.log('[bbb]didStartMonitoringForRegion:' + JSON.stringify(pluginResult));
+      },
+  
+      didRangeBeaconsInRegion: function (pluginResult) {
+        alert('[bbb] didRangeBeaconsInRegion: ' + JSON.stringify(pluginResult));
+      },
+      
+      didEnterRegion: function(pluginResult){
+        alert('bbb] didEnterRegion: ' + JSON.stringify(pluginResult));
+      }
+  
+    });
+  
+    var uuid = '19d5f76a-fd04-5aa3-b16e-e93277163af6'.toUpperCase();
+    var identifier = 'GemTot USB';
+    var minor = 0;//1000;
+    var major = 0;//5;
+    var beaconRegion = new window.cordova.plugins.locationManager.BeaconRegion(identifier, uuid, major, minor);
+  
+    window.cordova.plugins.locationManager.setDelegate(delegate);
+    window.cordova.plugins.locationManager.startMonitoringForRegion(beaconRegion)
+    .fail(console.error)
+    .done();
+
   });
 })
 
